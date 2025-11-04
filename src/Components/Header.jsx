@@ -18,6 +18,7 @@ export default function Header() {
         fontSize: "18px",
         zIndex: 1000,
         backgroundColor: "transparent",
+        backdropFilter: "blur(8px)",
       }}
     >
       {items.map((item, index) => (
@@ -26,11 +27,15 @@ export default function Header() {
           onMouseEnter={() => setHovered(index)}
           onMouseLeave={() => setHovered(null)}
           style={{
-            color: hovered === index ? "white" : "white", // меняем цвет при наведении
+            color: hovered === index ? "#999BFF" : "#EEE",
             cursor: "pointer",
-            transform: hovered === index ? "scale(1.2)" : "scale(1)", // увеличиваем
-            transition: "all 0.2s ease", // плавная анимация
+            transform: hovered === index ? "scale(1.15)" : "scale(1)",
+            transition: "all 0.25s ease",
             fontWeight: hovered === index ? "bold" : "normal",
+            textShadow:
+              hovered === index
+                ? "0 0 10px rgba(153, 155, 255, 0.7)"
+                : "0 0 0 transparent",
           }}
         >
           {item}
