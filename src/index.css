@@ -1,16 +1,1 @@
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: radial-gradient(at 30% 40%, #2a2a72, transparent 60%),
-    radial-gradient(at 70% 70%, #1a1a40, transparent 70%),
-    linear-gradient(135deg, #0b0b1a, #181826);
-  background-blend-mode: overlay;
-  color: #e2e8f0;
-  font-family: "Rubik", sans-serif;
-}
+html,body,#root{min-height:100%;margin:0;padding:0}body{min-width:320px}::selection{background:#ff5c35;color:#11110f}::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#11110f}::-webkit-scrollbar-thumb{background:#55554f;border:3px solid #11110f;border-radius:10px}button,input,textarea{font:inherit}
