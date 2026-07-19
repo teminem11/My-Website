@@ -13,6 +13,11 @@ const projects = [
 ];
 
 const filters = ["All", "Java", "Backend", "Frontend"];
+const skills = [
+  "Java", "Spring Boot", "React", "JavaScript", "TypeScript", "REST APIs",
+  "SQL", "MongoDB", "Maven", "JUnit", "HTML", "CSS", "Git", "GitHub", "IntelliJ IDEA",
+];
+const emailUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=artempostnov2203@gmail.com&su=Let%27s%20work%20together";
 
 function ArrowIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11" /></svg>;
@@ -22,6 +27,7 @@ function App() {
   const [filter, setFilter] = useState("All");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const visibleProjects = useMemo(() => filter === "All" ? projects : projects.filter((project) => project.type === filter || project.tags.includes(filter)), [filter]);
 
   useEffect(() => {
@@ -31,17 +37,36 @@ function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    let endTimer;
+    let nextTimer;
+    const summon = () => {
+      setDarkMode(true);
+      endTimer = window.setTimeout(() => {
+        setDarkMode(false);
+        nextTimer = window.setTimeout(summon, 16000 + Math.random() * 12000);
+      }, 5500);
+    };
+
+    nextTimer = window.setTimeout(summon, 4000);
+    return () => {
+      window.clearTimeout(endTimer);
+      window.clearTimeout(nextTimer);
+    };
+  }, []);
+
+  const toggleDarkMode = () => setDarkMode((active) => !active);
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <div className="site-shell">
+    <div className={`site-shell ${darkMode ? "dark-shift" : ""}`}>
       <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
         <a className="wordmark" href="#top" onClick={closeMenu} aria-label="Artem Postnov, home">AP<span>.</span></a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Toggle navigation"><span /><span /></button>
         <nav className={menuOpen ? "is-open" : ""} aria-label="Main navigation">
           <a href="#about" onClick={closeMenu}>About</a><a href="#work" onClick={closeMenu}>Work</a><a href="#contact" onClick={closeMenu}>Contact</a>
         </nav>
-        <a className="header-cta" href="mailto:artempostnov2203@gmail.com">Let’s talk <span>↗</span></a>
+        <a className="header-cta" href={emailUrl} target="_blank" rel="noreferrer">Let’s talk <span>↗</span></a>
       </header>
 
       <main id="top">
@@ -60,13 +85,19 @@ function App() {
           <div className="portrait-stage">
             <div className="portrait-orbit"><span>BUILD · TEST · LEARN · SHIP · </span></div>
             <div className="portrait-halo" />
-            <img src={`${import.meta.env.BASE_URL}artem-pixel.png`} alt="Pixel art portrait of Artem Postnov" />
-            <div className="portrait-code">AP_01<br /><span>JAVA / REACT</span></div>
+            <div className="portrait-images">
+              <img src={`${import.meta.env.BASE_URL}artem-pixel.png`} alt="Pixel art portrait of Artem Postnov" />
+              <img className="portrait-dark" src={`${import.meta.env.BASE_URL}artem-pixel-demon.png`} alt="" aria-hidden="true" />
+            </div>
+            <div className="portrait-code">{darkMode ? "AP_666" : "AP_01"}<br /><span>{darkMode ? "SYSTEM / CORRUPTED" : "JAVA / REACT"}</span></div>
+            <button className="alter-toggle" type="button" onClick={toggleDarkMode} aria-pressed={darkMode} aria-label="Toggle alter ego mode">
+              <span /> {darkMode ? "Restore signal" : "Alter ego"}
+            </button>
           </div>
           <a className="scroll-note" href="#about">Scroll to discover <span>↓</span></a>
         </section>
 
-        <section className="marquee" aria-label="Core skills"><div>{["Java", "Spring Boot", "React", "REST APIs", "SQL", "Git", "Java", "Spring Boot", "React", "REST APIs", "SQL", "Git"].map((skill, i) => <span key={`${skill}-${i}`}>{skill}<b>✦</b></span>)}</div></section>
+        <section className="marquee" aria-label="Core skills"><div className="marquee-track">{[0, 1].map((group) => <div className="marquee-group" aria-hidden={group === 1} key={group}>{skills.map((skill) => <span key={`${group}-${skill}`}>{skill}<b>✦</b></span>)}</div>)}</div></section>
 
         <section className="about section-wrap" id="about">
           <div className="section-index">01 / About</div>
@@ -112,7 +143,7 @@ function App() {
           <div className="contact-top"><div className="section-index">04 / Contact</div><span className="status"><i /> Open to internships & junior roles</span></div>
           <p className="contact-kicker">Have a challenge in mind?</p>
           <h2>Let’s build something<br /><em>worth using.</em></h2>
-          <a className="email-link" href="mailto:artempostnov2203@gmail.com">artempostnov2203@gmail.com <ArrowIcon /></a>
+          <a className="email-link" href={emailUrl} target="_blank" rel="noreferrer">artempostnov2203@gmail.com <span className="email-action">Email me <ArrowIcon /></span></a>
           <div className="contact-bottom"><div className="socials"><a href="https://github.com/teminem11" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/artem-postnov-409385330/" target="_blank" rel="noreferrer">LinkedIn ↗</a></div><p>Based in Dublin, Ireland<br />Working worldwide</p></div>
         </section>
       </main>

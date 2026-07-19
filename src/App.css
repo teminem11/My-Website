@@ -35,6 +35,8 @@ a {
 }
 .site-shell {
   overflow: hidden;
+  background: var(--paper);
+  transition: background-color 0.7s ease, filter 0.7s ease;
 }
 .site-header {
   height: 76px;
@@ -228,6 +230,16 @@ svg {
   align-items: flex-end;
   justify-content: center;
 }
+.portrait-images {
+  height: 94%;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  isolation: isolate;
+}
 .portrait-stage img {
   height: 94%;
   max-width: 100%;
@@ -236,6 +248,56 @@ svg {
   filter: grayscale(0.08) contrast(1.05);
   position: relative;
   z-index: 2;
+}
+.portrait-images img {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  height: 100%;
+  transition: filter 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+}
+.portrait-dark {
+  opacity: 0;
+  clip-path: circle(0% at 50% 47%);
+  transform: scale(0.985);
+  transition:
+    clip-path 1.05s cubic-bezier(0.65, 0, 0.2, 1),
+    transform 1.05s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.12s linear,
+    filter 0.9s ease;
+}
+.portrait-images:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(90deg, transparent 42%, rgba(255, 30, 15, 0.5) 49%, transparent 56%),
+    repeating-linear-gradient(0deg, transparent 0 5px, rgba(255, 255, 255, 0.1) 6px);
+}
+.alter-toggle {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: 1%;
+  border: 0;
+  background: transparent;
+  color: #8b8b83;
+  font: 500 9px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.alter-toggle span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 .portrait-halo {
   position: absolute;
@@ -317,10 +379,17 @@ svg {
   position: relative;
   z-index: 4;
 }
-.marquee > div {
+.marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 25s linear infinite;
+  animation: marquee 18s linear infinite;
+  will-change: transform;
+}
+.marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 100vw;
+  justify-content: space-around;
   padding: 14px 0;
 }
 .marquee span {
@@ -336,6 +405,9 @@ svg {
   to {
     transform: translateX(-50%);
   }
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
 }
 .section-wrap {
   padding: 120px clamp(24px, 7vw, 110px);
@@ -626,6 +698,89 @@ svg {
   width: 30px;
   height: 30px;
 }
+.email-action {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font: 500 10px var(--mono);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* A short, occasional alternate state — also available from the portrait control. */
+.dark-shift {
+  --paper: #0c0808;
+  --paper-2: #160a0a;
+  --ink: #080202;
+  --accent: #ff1f0f;
+  --acid: #ff3426;
+  --line: rgba(255, 48, 34, 0.2);
+  --muted: #a47770;
+}
+.dark-shift .hero,
+.dark-shift .work,
+.dark-shift footer {
+  background: #060101;
+}
+.dark-shift .hero:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.16;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #ff1f0f 4px);
+  animation: signal-flicker 0.16s steps(2) 5;
+}
+.dark-shift .portrait-images > img:first-child {
+  opacity: 0.18;
+  transform: scale(1.025) skewX(-0.5deg);
+  filter: grayscale(1) contrast(1.55) brightness(0.48) blur(1px);
+}
+.dark-shift .portrait-dark {
+  opacity: 1;
+  clip-path: circle(78% at 50% 47%);
+  transform: scale(1);
+  filter: contrast(1.08) drop-shadow(0 0 24px rgba(255, 20, 0, 0.28));
+}
+.dark-shift .portrait-images:after {
+  animation: corruption-sweep 1.05s cubic-bezier(0.65, 0, 0.2, 1) both;
+}
+.dark-shift .portrait-stage {
+  animation: portrait-glitch 1.05s steps(1) both;
+}
+.dark-shift .portrait-halo {
+  border-color: rgba(255, 30, 15, 0.65);
+  box-shadow: inset 0 0 70px rgba(150, 0, 0, 0.35), 0 0 70px rgba(255, 0, 0, 0.16);
+}
+.dark-shift .about,
+.dark-shift .toolkit {
+  color: #eee2df;
+}
+.dark-shift .contact {
+  background: #8d0b04;
+  color: #fff0ed;
+}
+.dark-shift .marquee {
+  background: #d11408;
+}
+@keyframes signal-flicker {
+  50% { opacity: 0.02; transform: translateX(4px); }
+}
+@keyframes corruption-sweep {
+  0% { opacity: 0; transform: translateX(-32%); }
+  18% { opacity: 0.75; }
+  62% { opacity: 0.28; }
+  100% { opacity: 0; transform: translateX(34%); }
+}
+@keyframes portrait-glitch {
+  0%, 100% { translate: 0; }
+  24% { translate: -2px 1px; }
+  25% { translate: 3px -1px; }
+  47% { translate: 0; }
+  68% { translate: 2px 0; }
+  69% { translate: -1px 0; }
+}
 .contact-bottom {
   display: flex;
   justify-content: space-between;
@@ -835,11 +990,7 @@ footer a {
   html {
     scroll-behavior: auto;
   }
-  .marquee > div,
   .portrait-orbit {
     animation: none;
-  }
-  * {
-    transition: none !important;
   }
 }
