@@ -38,24 +38,21 @@ function App() {
   }, []);
 
   useEffect(() => {
-    let endTimer;
-    let nextTimer;
-    const summon = () => {
+    let idleTimer;
+
+    const onScrollActivity = () => {
       setDarkMode(true);
-      endTimer = window.setTimeout(() => {
-        setDarkMode(false);
-        nextTimer = window.setTimeout(summon, 16000 + Math.random() * 12000);
-      }, 5500);
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => setDarkMode(false), 650);
     };
 
-    nextTimer = window.setTimeout(summon, 4000);
+    window.addEventListener("scroll", onScrollActivity, { passive: true });
     return () => {
-      window.clearTimeout(endTimer);
-      window.clearTimeout(nextTimer);
+      window.removeEventListener("scroll", onScrollActivity);
+      window.clearTimeout(idleTimer);
     };
   }, []);
 
-  const toggleDarkMode = () => setDarkMode((active) => !active);
   const closeMenu = () => setMenuOpen(false);
 
   return (
@@ -90,9 +87,6 @@ function App() {
               <img className="portrait-dark" src={`${import.meta.env.BASE_URL}artem-pixel-demon.png`} alt="" aria-hidden="true" />
             </div>
             <div className="portrait-code">{darkMode ? "AP_666" : "AP_01"}<br /><span>{darkMode ? "SYSTEM / CORRUPTED" : "JAVA / REACT"}</span></div>
-            <button className="alter-toggle" type="button" onClick={toggleDarkMode} aria-pressed={darkMode} aria-label="Toggle alter ego mode">
-              <span /> {darkMode ? "Restore signal" : "Alter ego"}
-            </button>
           </div>
           <a className="scroll-note" href="#about">Scroll to discover <span>↓</span></a>
         </section>
