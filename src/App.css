@@ -254,17 +254,17 @@ svg {
   inset: auto 0 0;
   width: 100%;
   height: 100%;
-  transition: filter 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.22s ease;
+  transition: filter 0.2s ease, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.1s ease;
 }
 .portrait-dark {
   opacity: 0;
   clip-path: circle(0% at 50% 47%);
   transform: scale(0.985);
   transition:
-    clip-path 0.55s cubic-bezier(0.65, 0, 0.2, 1),
-    transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
-    opacity 0.12s linear,
-    filter 0.5s ease;
+    clip-path 0.22s cubic-bezier(0.65, 0, 0.2, 1),
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.06s linear,
+    filter 0.2s ease;
 }
 .portrait-images:after {
   content: "";
@@ -723,10 +723,10 @@ svg {
   filter: contrast(1.08) drop-shadow(0 0 24px rgba(255, 20, 0, 0.28));
 }
 .dark-shift .portrait-images:after {
-  animation: corruption-sweep 0.55s cubic-bezier(0.65, 0, 0.2, 1) both;
+  animation: corruption-sweep 0.22s cubic-bezier(0.65, 0, 0.2, 1) both;
 }
 .dark-shift .portrait-stage {
-  animation: portrait-glitch 0.55s steps(1) both;
+  animation: portrait-glitch 0.22s steps(1) both;
 }
 .dark-shift .portrait-halo {
   border-color: rgba(255, 30, 15, 0.65);

@@ -43,12 +43,16 @@ function App() {
     const onScrollActivity = () => {
       setDarkMode(true);
       window.clearTimeout(idleTimer);
-      idleTimer = window.setTimeout(() => setDarkMode(false), 650);
+      idleTimer = window.setTimeout(() => setDarkMode(false), 520);
     };
 
     window.addEventListener("scroll", onScrollActivity, { passive: true });
+    window.addEventListener("wheel", onScrollActivity, { passive: true });
+    window.addEventListener("touchmove", onScrollActivity, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScrollActivity);
+      window.removeEventListener("wheel", onScrollActivity);
+      window.removeEventListener("touchmove", onScrollActivity);
       window.clearTimeout(idleTimer);
     };
   }, []);
